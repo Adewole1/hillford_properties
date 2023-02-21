@@ -18,7 +18,7 @@ static/
 *.dat
 
 # dependencies
-/node_modules
+hillford_frontend/node_modules
 /node_modules/
 /.pnp
 .pnp.js

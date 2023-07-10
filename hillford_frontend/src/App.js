@@ -1,20 +1,13 @@
 import React, { Component } from "react";
-import Root from "./Root";
-import { Route, Switch } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import Home from "./components/home";
-import Signup from "./components/staff/Signup";
-import Login from "./components/login/Login";
-// import ResendActivation from "./components/account/ResendActivation";
-// import ActivateAccount from "./components/account/ActivateAccount";
-// import ResetPassword from "./components/account/ResetPassword";
-// import ResetPasswordConfirm from "./components/account/ResetPasswordConfirm";
-
-// import Dashboard from "./components/dashboard/Dashboard";
-
-import requireAuth from "./utils/RequireAuth";
-
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider, createTheme as MaterialTHeme } from "@mui/material/styles"
+import { Container } from "@mui/material";
+
+import Home from "./pages/home";
+import "./App.css";
+
 
 if (window.location.origin === "http://localhost:3000") {
   axios.defaults.baseURL = "http://127.0.0.1:8000";
@@ -22,27 +15,37 @@ if (window.location.origin === "http://localhost:3000") {
   axios.defaults.baseURL = window.location.origin;
 }
 
+
+const customTheme = MaterialTHeme({
+  palette: {
+    primary: {
+      main: "#460F56", 
+      contrastText: '#fff',
+    },
+    secondary: {
+      main: '#CEA032',
+      contrastText: '#000',
+    },
+  },
+  typography: {
+    fontFamily: "'Outfit', sans-serif, 'Playfair Display', serif",
+  },
+})
+
+
 class App extends Component {
   render() {
     return (
-      <div>
-        <Root>
-          <ToastContainer hideProgressBar={true} newestOnTop={true} />
-          <Switch>
-            <Route path="/accounts/staff/new-staff" component={Signup} />
-            <Route path="/accounts/login" component={Login} />
-            {/* <Route path="/dashboard" component={requireAuth(Dashboard)} /> */}
-            <Route exact path="/" component={Home} />
-            {/* <Route path="/resend_activation" component={ResendActivation} /> */}
-            {/* <Route path="/activate/:uid/:token" component={ActivateAccount} /> */}
-            {/* <Route path="/send_reset_password/" component={ResetPassword} /> */}
-            {/* <Route
-              path="/reset_password/:uid/:token"
-              component={ResetPasswordConfirm}
-            /> */}
-          </Switch>
-        </Root>
-      </div>
+      <Router>
+        <ThemeProvider theme={customTheme}>
+        <ToastContainer hideProgressBar={true} newestOnTop={true} />
+        <Container maxWidth="xl">
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+          </Routes>
+        </Container>
+        </ThemeProvider>
+      </Router>
     );
   }
 }
